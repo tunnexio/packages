@@ -35,7 +35,7 @@ for arch in ['amd64', 'arm64']:
         'contents': [{'src': f'work/upstream/tnx-linux-{arch}', 'dst': '/usr/bin/tunnex',
                       'file_info': {'mode': 493}}],
         'rpm': {'signature': {'key_file': os.environ['PACKAGE_GPG_KEY'],
-                              'key_id': os.environ['PACKAGE_KEY_ID']}},
+                              'key_id': os.environ['PACKAGE_KEY_ID'][-16:]}},
         'apk': {'signature': {'key_file': os.environ['PACKAGE_APK_KEY'], 'key_name': 'tunnex'}},
     }
     Path('work/nfpm.json').write_text(json.dumps(config))
