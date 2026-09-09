@@ -120,6 +120,8 @@ main() {
             root apk add tunnex-cli
             ;;
         pacman)
+            # pacman expands $arch when reading the repository configuration.
+            # shellcheck disable=SC2016
             printf '[tunnex]\nSigLevel = Required DatabaseRequired\nServer = %s/arch/$arch\n' "$base" > "$temp/repo"
             include='Include = /etc/pacman.d/tunnex.conf'
             # Refuse an existing manually defined section instead of duplicating it.
