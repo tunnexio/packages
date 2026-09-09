@@ -17,7 +17,7 @@ main() {
     # Never overwrite another repository definition or key.
     put() {
         if [ -e "$2" ] || [ -L "$2" ]; then
-            cmp -s "$1" "$2" || fail "Existing $2 differs; inspect it before retrying."
+            [ "$(sha "$1")" = "$(sha "$2")" ] || fail "Existing $2 differs; inspect it before retrying."
         else
             root install -m 644 "$1" "$2"
         fi
@@ -85,7 +85,7 @@ main() {
             # Check both destinations before the first write.
             for pair in /usr/share/keyrings/tunnex.asc /etc/apt/sources.list.d/tunnex.list; do
                 if [ "$pair" = /usr/share/keyrings/tunnex.asc ]; then src="$temp/$key"; else src="$temp/repo"; fi
-                if [ -e "$pair" ] || [ -L "$pair" ]; then cmp -s "$src" "$pair" || fail "Existing $pair differs; inspect it before retrying."; fi
+                if [ -e "$pair" ] || [ -L "$pair" ]; then [ "$(sha "$src")" = "$(sha "$pair")" ] || fail "Existing $pair differs; inspect it before retrying."; fi
             done
             put "$temp/$key" /usr/share/keyrings/tunnex.asc
             put "$temp/repo" /etc/apt/sources.list.d/tunnex.list
@@ -98,7 +98,7 @@ main() {
             if [ "$manager" = zypper ]; then repos=/etc/zypp/repos.d; else repos=/etc/yum.repos.d; fi
             for pair in /etc/pki/rpm-gpg/tunnex.asc "$repos/tunnex.repo"; do
                 if [ "$pair" = /etc/pki/rpm-gpg/tunnex.asc ]; then src="$temp/$key"; else src="$temp/repo"; fi
-                if [ -e "$pair" ] || [ -L "$pair" ]; then cmp -s "$src" "$pair" || fail "Existing $pair differs; inspect it before retrying."; fi
+                if [ -e "$pair" ] || [ -L "$pair" ]; then [ "$(sha "$src")" = "$(sha "$pair")" ] || fail "Existing $pair differs; inspect it before retrying."; fi
             done
             root mkdir -p /etc/pki/rpm-gpg
             put "$temp/$key" /etc/pki/rpm-gpg/tunnex.asc
@@ -128,7 +128,7 @@ main() {
             if grep -Eq '^[[:space:]]*\[tunnex\]' /etc/pacman.conf; then
                 fail 'Existing [tunnex] in /etc/pacman.conf; keep using pacman -Syu tunnex-cli.'
             fi
-            if [ -e /etc/pacman.d/tunnex.conf ]; then cmp -s "$temp/repo" /etc/pacman.d/tunnex.conf || fail 'Conflicting /etc/pacman.d/tunnex.conf'; fi
+            if [ -e /etc/pacman.d/tunnex.conf ]; then [ "$(sha "$temp/repo")" = "$(sha /etc/pacman.d/tunnex.conf)" ] || fail 'Conflicting /etc/pacman.d/tunnex.conf'; fi
             root pacman-key --init
             root pacman-key --add "$temp/$key"
             root pacman-key --lsign-key "$key_id"
