@@ -56,6 +56,8 @@ jobs:
             nix --extra-experimental-features "nix-command flakes" build --no-write-lock-file path:/repo#tunnex-cli
             test "$(result/bin/tunnex version)" = "$EXPECTED"
             result/bin/tunnex help
+            nix --extra-experimental-features "nix-command flakes" profile install --no-write-lock-file path:/repo#tunnex-cli
+            test "$(/root/.nix-profile/bin/tunnex version)" = "$EXPECTED"
           '
       - name: Build and verify Arch recipe
         if: runner.arch == 'X64'
