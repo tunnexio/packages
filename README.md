@@ -61,7 +61,7 @@ sudo apk add tunnex-cli
 curl -fsS https://tunnexio.github.io/packages/tunnex.asc -o /tmp/tunnex.asc
 # Inspect and compare the fingerprint with keys/FINGERPRINT first.
 sudo pacman-key --add /tmp/tunnex.asc
-sudo pacman-key --lsign-key REPLACE_WITH_FULL_FINGERPRINT
+sudo pacman-key --lsign-key 9A565661A108388E34E4D9C6A0C5B3B1D39A8181
 sudo tee -a /etc/pacman.conf >/dev/null <<'REPO'
 [tunnex]
 SigLevel = Required DatabaseRequired
@@ -95,7 +95,7 @@ requirements. Kubernetes operations also have their own prerequisites.
 ## Verification scope
 
 CI installs and removes packages on Ubuntu 24.04, Debian 12, Fedora 42,
-Rocky Linux 9, Alpine 3.22 and Arch Linux containers, executing version/help.
+Rocky Linux 9, Amazon Linux 2023, openSUSE Leap 16.0, Alpine 3.22 and Arch Linux containers, executing version/help.
 This is package installation proof, not a live VPN/tunnel or every-distro test.
 Other compatible distributions and ARM64 packages require corresponding host
 acceptance before fleet rollout. These are first-party repositories, not claims

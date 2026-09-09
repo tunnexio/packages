@@ -88,7 +88,7 @@ jobs:
           cmp work/release.json work/recheck.json
           if [ ! -f work/existing ]; then
             tag="$(python3 -c 'import json; print(json.load(open("work/release.json"))["tag"])')"
-            gh release create "$tag" dist/* --title "Tunnex CLI $tag" --notes 'Signed native packages derived from the matching verified tunnexio/tunnex release. See provenance.json, SHA256SUMS and installation instructions.' --latest
+            gh release create "$tag" dist/* --target "$GITHUB_SHA" --title "Tunnex CLI $tag" --notes 'Signed native packages derived from the matching verified tunnexio/tunnex release. See provenance.json, SHA256SUMS and installation instructions.' --latest
           fi
           cp work/release.json site/current.json
       - uses: actions/upload-pages-artifact@v3
