@@ -15,7 +15,7 @@ for os in ubuntu:24.04 debian:12; do
     echo "deb [signed-by=/usr/share/keyrings/tunnex.asc] http://127.0.0.1:8765/apt stable main" > /etc/apt/sources.list.d/tunnex.list
     apt-get update -qq; apt-get install -y tunnex-cli
     test "$(tunnex version)" = "$EXPECTED"; tunnex help
-    apt-get remove -y tunnex-cli; ! command -v tunnex
+    apt-get remove -y tunnex-cli; test ! -e /usr/bin/tunnex
   '
 done
 for os in fedora:42 rockylinux:9 amazonlinux:2023; do
@@ -23,7 +23,7 @@ for os in fedora:42 rockylinux:9 amazonlinux:2023; do
     printf "[tunnex]\nname=Tunnex\nbaseurl=http://127.0.0.1:8765/rpm\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=http://127.0.0.1:8765/tunnex.asc\n" > /etc/yum.repos.d/tunnex.repo
     dnf install -y tunnex-cli
     test "$(tunnex version)" = "$EXPECTED"; tunnex help
-    dnf remove -y tunnex-cli; ! command -v tunnex
+    dnf remove -y tunnex-cli; test ! -e /usr/bin/tunnex
   '
 done
 docker run --rm --network host -v "$PWD/keys/tunnex.asc:/tmp/tunnex.asc:ro" -e EXPECTED="$expected" opensuse/leap:16.0 sh -ec '
@@ -32,14 +32,14 @@ docker run --rm --network host -v "$PWD/keys/tunnex.asc:/tmp/tunnex.asc:ro" -e E
   zypper --non-interactive refresh tunnex
   zypper --non-interactive install --from tunnex tunnex-cli
   test "$(tunnex version)" = "$EXPECTED"; tunnex help
-  zypper --non-interactive remove tunnex-cli; ! command -v tunnex
+  zypper --non-interactive remove tunnex-cli; test ! -e /usr/bin/tunnex
 '
 docker run --rm --network host -e EXPECTED="$expected" alpine:3.22 sh -ec '
   wget -q http://127.0.0.1:8765/tunnex.rsa.pub -O /etc/apk/keys/tunnex.rsa.pub
   echo http://127.0.0.1:8765/alpine >> /etc/apk/repositories
   apk update; apk add tunnex-cli
   test "$(tunnex version)" = "$EXPECTED"; tunnex help
-  apk del tunnex-cli; ! command -v tunnex
+  apk del tunnex-cli; test ! -e /usr/bin/tunnex
 '
 docker run --rm --network host -e EXPECTED="$expected" -e KEY_ID="$PACKAGE_KEY_ID" archlinux:base bash -ec '
   pacman-key --init
@@ -48,7 +48,7 @@ docker run --rm --network host -e EXPECTED="$expected" -e KEY_ID="$PACKAGE_KEY_I
   printf "\n[tunnex]\nSigLevel = Required DatabaseRequired\nServer = http://127.0.0.1:8765/arch/\$arch\n" >> /etc/pacman.conf
   pacman -Sy --noconfirm tunnex-cli
   test "$(tunnex version)" = "$EXPECTED"; tunnex help
-  pacman -R --noconfirm tunnex-cli; ! command -v tunnex
+  pacman -R --noconfirm tunnex-cli; test ! -e /usr/bin/tunnex
 '
 # Prove altered signed metadata is refused without using insecure install flags.
 cp site/apt/dists/stable/Release work/tampered-Release
