@@ -1,6 +1,6 @@
 pkgbase = tunnex-cli-bin
 	pkgdesc = Tunnex Zero Trust command-line client
-	pkgver = 0.1.25
+	pkgver = 0.1.27
 	pkgrel = 1
 	url = https://tunnex.io
 	arch = x86_64
@@ -9,9 +9,9 @@ pkgbase = tunnex-cli-bin
 	optdepends = wireguard-tools: tunnel up/down commands
 	provides = tunnex-cli
 	conflicts = tunnex-cli
-	source_x86_64 = tunnex-0.1.25-x86_64::https://github.com/tunnexio/tunnex/releases/download/v0.1.25/tnx-linux-amd64
-	sha256sums_x86_64 = 4cedc6aa1d9a00fb5023fe74bd5359b38ffa71d4a4ac40e2f44d47c2ced0b42f
-	source_aarch64 = tunnex-0.1.25-aarch64::https://github.com/tunnexio/tunnex/releases/download/v0.1.25/tnx-linux-arm64
-	sha256sums_aarch64 = 81a56179f1800284cdd6fcb8fcbca7f7b822598c98af446c151fc43cf127eb7e
+	source_x86_64 = tunnex-0.1.27-x86_64::https://github.com/tunnexio/tunnex/releases/download/v0.1.27/tnx-linux-amd64
+	sha256sums_x86_64 = 787e5f7fb31f43f6cc64d06677eeb9491ede3b9868026c29afc1b28a2e4c229a
+	source_aarch64 = tunnex-0.1.27-aarch64::https://github.com/tunnexio/tunnex/releases/download/v0.1.27/tnx-linux-arm64
+	sha256sums_aarch64 = 42fdea19379e7eedcc1feddbd25f6cc1fb439550ddbb467c7c70b70d99593043
 
 pkgname = tunnex-cli-bin
