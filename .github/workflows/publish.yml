@@ -11,10 +11,24 @@ concurrency:
   group: package-publication
   cancel-in-progress: false
 jobs:
+  upstream:
+    runs-on: ubuntu-24.04
+    outputs:
+      ready: ${{ steps.ready.outputs.ready }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test release readiness guards
+        run: python3 -m unittest discover -s scripts -p 'test_readiness.py' -v
+      - name: Wait for complete upstream artifacts
+        id: ready
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/readiness.py
   installer:
     uses: ./.github/workflows/installer.yml
   publish:
-    needs: installer
+    needs: [installer, upstream]
+    if: needs.upstream.outputs.ready == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     permissions:
