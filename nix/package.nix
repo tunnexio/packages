@@ -1,15 +1,15 @@
 { stdenvNoCC, fetchurl, lib }:
 let
   artifacts = {
-    x86_64-linux = { arch = "amd64"; sha256 = "cf6c006b553b490b1611e45ae290ba544951cc7ee4b7fd8b658bd9ca437965e9"; };
-    aarch64-linux = { arch = "arm64"; sha256 = "7ac9e0a7974908baeead28cd60bebfa060dcf01d2ae7ce2f69bdda9006d69ae6"; };
+    x86_64-linux = { arch = "amd64"; sha256 = "bf564377523c91621115b3113240a70cbbf70bcb53304c853810ae995e428542"; };
+    aarch64-linux = { arch = "arm64"; sha256 = "718389aad256e6e569d274c8ff90c4bf218e37f1377c6db937e1d9d09b2f075b"; };
   };
   artifact = artifacts.${stdenvNoCC.hostPlatform.system};
 in stdenvNoCC.mkDerivation {
   pname = "tunnex-cli";
-  version = "0.1.31";
+  version = "0.1.33";
   src = fetchurl {
-    url = "https://github.com/tunnexio/tunnex/releases/download/v0.1.31/tnx-linux-${artifact.arch}";
+    url = "https://github.com/tunnexio/tunnex/releases/download/v0.1.33/tnx-linux-${artifact.arch}";
     inherit (artifact) sha256;
   };
   dontUnpack = true;
@@ -19,7 +19,7 @@ in stdenvNoCC.mkDerivation {
   '';
   doInstallCheck = stdenvNoCC.buildPlatform.canExecute stdenvNoCC.hostPlatform;
   installCheckPhase = ''
-    test "$("$out/bin/tunnex" version)" = "v0.1.31"
+    test "$("$out/bin/tunnex" version)" = "v0.1.33"
     "$out/bin/tunnex" help
   '';
   meta = {
