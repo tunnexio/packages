@@ -183,3 +183,15 @@ revocation and explicit client trust replacement; do not disable signature check
 
 Changes to release scripts require review. Local GitHub credentials are never
 stored in this repository or copied to workflow secrets.
+
+## Waiting for upstream artifacts
+
+The update preflight waits for the latest stable release to contain its source marker, CLI checksums and both Linux CLI binaries.
+If artifacts are missing, it records the release tag and missing filenames in the
+Actions job summary and skips publication. The next scheduled run checks again;
+existing published versions remain available. A successful waiting run does not
+mean the new release has been published.
+
+API/authentication errors, malformed release metadata, and invalid source markers
+still fail. A present source marker is verified even when other assets are missing.
+The existing exact-source tag CI, checksum and publication checks remain required.

@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['scripts/channels.py', 'scripts/channel_guard.py', 'scripts/test_channels.py', 'scripts/upstream.py', '.github/workflows/channels.yml']
+    paths: ['scripts/channels.py', 'scripts/channel_guard.py', 'scripts/test_channels.py', 'scripts/upstream.py', 'scripts/readiness.py', 'scripts/test_readiness.py', '.github/workflows/channels.yml']
   schedule:
     - cron: '53 */6 * * *'
 permissions:
@@ -12,7 +12,22 @@ concurrency:
   group: recipe-publication
   cancel-in-progress: false
 jobs:
+  upstream:
+    runs-on: ubuntu-24.04
+    outputs:
+      ready: ${{ steps.ready.outputs.ready }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test release readiness guards
+        run: python3 -m unittest discover -s scripts -p 'test_readiness.py' -v
+      - name: Wait for complete upstream artifacts
+        id: ready
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/readiness.py
   generate:
+    needs: upstream
+    if: needs.upstream.outputs.ready == 'true'
     runs-on: ubuntu-24.04
     outputs:
       changed: ${{ steps.generate.outputs.changed }}
