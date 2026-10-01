@@ -1,6 +1,6 @@
 # Generated from a verified Tunnex release; not an AUR submission.
 pkgname=tunnex-cli-bin
-pkgver=0.1.35
+pkgver=0.1.37
 pkgrel=1
 pkgdesc='Tunnex Zero Trust command-line client'
 arch=('x86_64' 'aarch64')
@@ -11,8 +11,8 @@ conflicts=('tunnex-cli')
 optdepends=('wireguard-tools: tunnel up/down commands')
 source_x86_64=("tunnex-${pkgver}-x86_64::https://github.com/tunnexio/tunnex/releases/download/v${pkgver}/tnx-linux-amd64")
 source_aarch64=("tunnex-${pkgver}-aarch64::https://github.com/tunnexio/tunnex/releases/download/v${pkgver}/tnx-linux-arm64")
-sha256sums_x86_64=('b9158dc5c0b2e5459f8b0fbea19c2f29faf2429acaa48ed813ea0a8d43bef51d')
-sha256sums_aarch64=('001cd546671621857c20ae843da9ae0f9cea3a18bacabb85dcb3a5710be8046c')
+sha256sums_x86_64=('328684f161b76a3bdd1b802479f5629ae0fce0cc1c03501dcbe61735e8b34952')
+sha256sums_aarch64=('037f17f5690600fdb9edef0829ee854d286ba78edf6d3975a6565856aa8dcd1e')
 package() {
   install -Dm755 "$srcdir/tunnex-${pkgver}-${CARCH}" "$pkgdir/usr/bin/tunnex"
 }
