@@ -1,6 +1,6 @@
 {
-  "version": "0.1.37",
-  "tag": "v0.1.37",
-  "source_sha": "44618e4ef0436688f16dd45bfcd55d24de66b27b",
-  "upstream_release": "https://github.com/tunnexio/tunnex/releases/tag/v0.1.37"
+  "version": "0.1.38",
+  "tag": "v0.1.38",
+  "source_sha": "f6d494516a8e0567aff3fd7c559e37a916ecd0d4",
+  "upstream_release": "https://github.com/tunnexio/tunnex/releases/tag/v0.1.38"
 }
