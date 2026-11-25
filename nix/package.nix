@@ -1,15 +1,15 @@
 { stdenvNoCC, fetchurl, lib }:
 let
   artifacts = {
-    x86_64-linux = { arch = "amd64"; sha256 = "e2726305072d884cc2ec2c2b5a58aeace3a020d1c94982ccdc06b458f4dfb322"; };
-    aarch64-linux = { arch = "arm64"; sha256 = "1c9c6880310d34d7a1ad1fcaed6fcba900174eb80fce20ba2947122a5d91fdbc"; };
+    x86_64-linux = { arch = "amd64"; sha256 = "ec1f7729ce8f4b58a87a81e6b9a2a82fb55dd3c30c765235d08b8f50948d2601"; };
+    aarch64-linux = { arch = "arm64"; sha256 = "49b024a770426b7350566a710e31c44aa95fd2790f6563a1b36bba5c514d338e"; };
   };
   artifact = artifacts.${stdenvNoCC.hostPlatform.system};
 in stdenvNoCC.mkDerivation {
   pname = "tunnex-cli";
-  version = "0.1.46";
+  version = "0.1.47";
   src = fetchurl {
-    url = "https://github.com/tunnexio/tunnex/releases/download/v0.1.46/tnx-linux-${artifact.arch}";
+    url = "https://github.com/tunnexio/tunnex/releases/download/v0.1.47/tnx-linux-${artifact.arch}";
     inherit (artifact) sha256;
   };
   dontUnpack = true;
@@ -19,7 +19,7 @@ in stdenvNoCC.mkDerivation {
   '';
   doInstallCheck = stdenvNoCC.buildPlatform.canExecute stdenvNoCC.hostPlatform;
   installCheckPhase = ''
-    test "$("$out/bin/tunnex" version)" = "v0.1.46"
+    test "$("$out/bin/tunnex" version)" = "v0.1.47"
     "$out/bin/tunnex" help
   '';
   meta = {
